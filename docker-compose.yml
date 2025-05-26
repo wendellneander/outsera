@@ -1,0 +1,21 @@
+version: '3.9'
+
+networks:
+  dev:
+
+services:
+  app:
+    container_name: ${APP_NAME}-app
+    build:
+      context: .
+      dockerfile: ./src/Dockerfile
+    ports:
+      - '3000:${PORT}'
+    volumes:
+      - ./src:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=${NODE_ENV}
+    command: npm run dev
+    networks:
+      - dev
