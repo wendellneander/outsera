@@ -1,18 +1,49 @@
 generator client {
   provider = "prisma-client-js"
-  // binaryTargets = ["native", "linux-musl-openssl-3.0.x"]
 }
 
 datasource db {
   provider = "sqlite"
   url      = "file:./dev.db"
 }
-
 model Movie {
   id        Int     @id @default(autoincrement())
   year      Int
   title     String
-  studios   String
-  producers String
   winner    Boolean @default(false)
+  
+  producers MovieProducer[]
+  studios   MovieStudio[]
+}
+
+model Producer {
+  id        Int     @id @default(autoincrement())
+  name      String  @unique
+  
+  movies    MovieProducer[]
+}
+
+model Studio {
+  id        Int     @id @default(autoincrement())
+  name      String  @unique
+  
+  movies    MovieStudio[]
+}
+
+model MovieProducer {
+  movie       Movie    @relation(fields: [movieId], references: [id])
+  movieId     Int       
+  producer    Producer @relation(fields: [producerId], references: [id])
+  producerId  Int
+
+  @@id([movieId, producerId])
+}
+
+model MovieStudio {
+  movie       Movie    @relation(fields: [movieId], references: [id])
+  movieId     Int
+  studio      Studio   @relation(fields: [studioId], references: [id])
+  studioId    Int
+
+  @@id([movieId, studioId])
 }
