@@ -8,6 +8,12 @@ This API provides information about movies from the Outsera Awards. It allows yo
 - Docker
 - Docker Compose
 
+## Tech Stack
+
+- Express
+- Prisma
+- SQLIte
+
 ## Setup
 
 1.  **Clone the repository:**
