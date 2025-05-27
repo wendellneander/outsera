@@ -14,6 +14,8 @@ model Movie {
   
   producers MovieProducer[]
   studios   MovieStudio[]
+
+  @@map("movies")
 }
 
 model Producer {
@@ -21,6 +23,8 @@ model Producer {
   name      String  @unique
   
   movies    MovieProducer[]
+
+  @@map("producers")
 }
 
 model Studio {
@@ -28,6 +32,8 @@ model Studio {
   name      String  @unique
   
   movies    MovieStudio[]
+
+  @@map("studios")
 }
 
 model MovieProducer {
@@ -37,6 +43,7 @@ model MovieProducer {
   producerId  Int
 
   @@id([movieId, producerId])
+  @@map("movie_producers")
 }
 
 model MovieStudio {
@@ -46,4 +53,5 @@ model MovieStudio {
   studioId    Int
 
   @@id([movieId, studioId])
+  @@map("movie_studios")
 }

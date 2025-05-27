@@ -1,32 +1,23 @@
-import { Server } from 'http'
-import { createApp, closeDatabase } from './app'
+import { createApp } from './app'
+import { importDataFromCSV } from './utils/csv-importer'
+import { Logger } from './utils/logger'
 
 const PORT = process.env.PORT || 3000
 
+const logger = new Logger('Server')
+
 async function startServer() {
   try {
+    await importDataFromCSV('src/database/data/movielist.csv')
+
     const app = await createApp()
-
-    const server = app.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`)
-    })
-
-    process.on('SIGTERM', async () => {
-      console.log('SIGTERM signal received')
-      await closeServer(server)
+    app.listen(PORT, () => {
+      logger.info(`Server running on port ${PORT}`)
     })
   } catch (error) {
     console.error('Failed to start server:', error)
     process.exit(1)
   }
-}
-
-async function closeServer(server: Server) {
-  console.log('Closing HTTP server')
-  server.close(async () => {
-    await closeDatabase()
-    console.log('HTTP server closed')
-  })
 }
 
 startServer()

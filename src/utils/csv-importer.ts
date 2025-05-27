@@ -118,20 +118,20 @@ class MovieDataFactory {
   }
 }
 
-export class CSVLoader {
+export class CSVImporter {
   private logger: Logger
   private repository: DatabaseRepository
   private nameExtractor: NameExtractor
   private dataFactory: MovieDataFactory
 
   constructor() {
-    this.logger = new Logger('CSVLoader')
+    this.logger = new Logger('CSVImporter')
     this.repository = new DatabaseRepository()
     this.nameExtractor = new NameExtractor()
     this.dataFactory = new MovieDataFactory()
   }
 
-  async loadDataFromCSV(filePath: string): Promise<void> {
+  async importDataFromCSV(filePath: string): Promise<void> {
     this.logger.info('Importing movies from csv: ', filePath)
 
     if (!fs.existsSync(filePath)) {
@@ -180,14 +180,13 @@ export class CSVLoader {
 
       // Process each movie
       for (const item of results) {
-        // Create the movie data
         const movieData = this.dataFactory.createMovieData(item)
         moviesToCreate.push(movieData)
 
-        // Process producers
         this.logger.debug(
           `Processing producers and studios for movie: ${item.title} (${item.year})`
         )
+        // Process producers
         const producers = this.nameExtractor.process(item.producers)
         producers.forEach((producerName) => {
           producerNames.add(producerName)
@@ -261,7 +260,7 @@ export class CSVLoader {
   }
 }
 
-export async function loadDataFromCSV(filePath: string): Promise<void> {
-  const loader = new CSVLoader()
-  await loader.loadDataFromCSV(filePath)
+export async function importDataFromCSV(filePath: string): Promise<void> {
+  const loader = new CSVImporter()
+  await loader.importDataFromCSV(filePath)
 }

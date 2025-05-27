@@ -1,5 +1,4 @@
-import { closeDatabase } from '../app'
-import { loadDataFromCSV } from '../utils/csv-loader'
+import { importDataFromCSV } from '../utils/csv-importer'
 
 async function importCsv() {
   try {
@@ -14,14 +13,12 @@ async function importCsv() {
     const csvFilePath = args[0]
     console.log(`Importing data from ${csvFilePath}...`)
 
-    await loadDataFromCSV(csvFilePath)
+    await importDataFromCSV(csvFilePath)
 
     console.log('CSV import completed successfully')
   } catch (error) {
     console.error('Error importing CSV:', error)
     process.exit(1)
-  } finally {
-    await closeDatabase()
   }
 }
 
