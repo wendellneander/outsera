@@ -38,6 +38,10 @@ class App {
     this.app.use(this.requestLogger)
   }
 
+  private initializeErrorHandling() {
+    this.app.use(this.errorHandler)
+  }
+
   private registerRoutes() {
     const producersController = createProducersController()
     this.app.get(
@@ -47,10 +51,6 @@ class App {
       )
     )
     this.app.get('/', (_req, res) => res.send('Hi!'))
-  }
-
-  private initializeErrorHandling() {
-    this.app.use(this.errorHandler)
   }
 
   public getApp(): Application {
