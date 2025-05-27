@@ -13,6 +13,15 @@ async function startServer() {
     const app = await createApp()
     app.listen(PORT, () => {
       logger.info(`Server running on port ${PORT}`)
+      logger.info(`Available routes:`)
+      app._router.stack.forEach((route: any) => {
+        if (route.route) {
+          const methods = Object.keys(route.route.methods)
+            .join(', ')
+            .toUpperCase()
+          logger.info(`- ${methods} ${route.route.path}`)
+        }
+      })
     })
   } catch (error) {
     console.error('Failed to start server:', error)
