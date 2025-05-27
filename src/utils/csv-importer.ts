@@ -41,7 +41,7 @@ class DatabaseRepository {
       await prisma.$executeRaw`delete from sqlite_sequence;`
       this.logger.info('Movies cleared successfully')
     } catch (error) {
-      this.logger.error('Error clearing movies:', error)
+      this.logger.error('Error cleaning database:', error)
       throw error
     }
   }
