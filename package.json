@@ -8,8 +8,10 @@
     "start": "node dist/server.js",
     "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts",
     "test": "jest --config jest.config.js",
-    "format": "npx prettier . --write",
-    "import-csv": "ts-node-dev --respawn --transpile-only ./src/scripts/import-csv"
+    "test:docker": "docker-compose run --rm test npm test",
+    "import:csv": "ts-node-dev --respawn --transpile-only ./src/scripts/import-csv",
+    "import:csv:docker": "docker-compose run --rm app npm run import:csv --",
+    "format": "npx prettier . --write"
   },
   "dependencies": {
     "@prisma/client": "^6.8.2",

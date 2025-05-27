@@ -84,6 +84,12 @@ This API provides information about movies from the Outsera Awards. It allows yo
 To run the tests, use the following command:
 
 ```bash
+npm run test:docker
+```
+
+Or
+
+```bash
 npm test
 ```
 
@@ -148,11 +154,11 @@ year;title;studios;producers;winner
 1.  **To import a CSV file run the following command:**
 
     ```bash
-    npm run import-csv -- "src/database/data/movielist.csv"
+    npm run import:csv:docker "src/database/data/movielist.csv"
     ```
 
-2.  **To see data in the database run:**
+    Or
 
     ```bash
-    npx prisma studio
+    npm run import:csv -- "src/database/data/movielist.csv"
     ```

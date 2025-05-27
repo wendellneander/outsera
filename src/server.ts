@@ -3,12 +3,13 @@ import { importDataFromCSV } from './utils/csv-importer'
 import { Logger } from './utils/logger'
 
 const PORT = process.env.PORT || 3000
+const CSV_FILE_PATH = process.env.CSV_PATH || 'src/database/data/movielist.csv'
 
 const logger = new Logger('Server')
 
 async function startServer() {
   try {
-    await importDataFromCSV('src/database/data/movielist.csv')
+    await importDataFromCSV(CSV_FILE_PATH)
 
     const app = await createApp()
     app.listen(PORT, () => {

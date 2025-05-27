@@ -14,5 +14,19 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=${NODE_ENV}
+      - DATABASE_URL=${DATABASE_URL}
+      - CSV_PATH=${CSV_PATH}
     networks:
       - dev
+    command: npm run dev
+  
+  test:
+    container_name: ${APP_NAME}-test
+    build: .
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=test
+      - DATABASE_URL=${DATABASE_URL}
+      - CSV_PATH=${CSV_PATH}
