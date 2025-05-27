@@ -1,4 +1,3 @@
-# Dockerfile
 FROM node:22-alpine
 
 WORKDIR /app
@@ -9,10 +8,12 @@ RUN npm install
 
 COPY . .
 
-RUN npx prisma migrate dev --name init
+RUN chown -R node:node /app
 
-RUN npm run build
+RUN npx prisma migrate dev
+
+USER node
 
 EXPOSE 3000
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "dev"]
