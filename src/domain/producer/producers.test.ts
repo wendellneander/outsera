@@ -1,11 +1,17 @@
 import request from 'supertest'
 import { createApp } from '../../app'
 import { Application } from 'express'
+import { initDatabase } from '../../database/client'
+import { importDataFromCSV } from '../../utils/csv-importer'
 
 describe('API Integration Tests', () => {
   let app: Application
+  const CSV_FILE_PATH =
+    process.env.CSV_PATH || 'src/database/data/movielist.csv'
 
   beforeAll(async () => {
+    await initDatabase()
+    await importDataFromCSV(CSV_FILE_PATH)
     app = await createApp()
   })
 

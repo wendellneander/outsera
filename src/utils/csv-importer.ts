@@ -1,8 +1,16 @@
 import fs from 'fs'
 import path from 'path'
 import csv from 'csv-parser'
-import prisma from './prisma-client'
 import { Logger } from './logger'
+import { db } from '../database/client'
+import { inArray } from 'drizzle-orm'
+import {
+  movieProducers,
+  movieStudios,
+  movies,
+  producers,
+  studios,
+} from '../database/schema'
 
 type MovieCSV = {
   year: string
@@ -33,62 +41,64 @@ class DatabaseRepository {
     this.logger.info('Cleaning the database')
 
     try {
-      await prisma.movieProducer.deleteMany({})
-      await prisma.movieStudio.deleteMany({})
-      await prisma.movie.deleteMany({})
-      await prisma.producer.deleteMany({})
-      await prisma.studio.deleteMany({})
-      await prisma.$executeRaw`delete from sqlite_sequence;`
-      this.logger.info('Movies cleared successfully')
+      await db.delete(movieProducers)
+      await db.delete(movieStudios)
+      await db.delete(movies)
+      await db.delete(producers)
+      await db.delete(studios)
+
+      await db.run(`DELETE FROM sqlite_sequence;`)
+
+      this.logger.info('Database cleared successfully')
     } catch (error) {
       this.logger.error('Error cleaning database:', error)
       throw error
     }
   }
 
-  async createMovies(movies: any[]): Promise<void> {
-    this.logger.debug('Creating movies in bulk:', movies.length)
-    await prisma.movie.createMany({ data: movies })
+  async createMovies(moviesData: any[]): Promise<void> {
+    this.logger.debug('Creating movies in bulk:', moviesData.length)
+    await db.insert(movies).values(moviesData)
   }
 
-  async createProducers(producers: any[]): Promise<void> {
-    this.logger.debug('Creating producers in bulk:', producers.length)
-    await prisma.producer.createMany({ data: producers })
+  async createProducers(producersData: any[]): Promise<void> {
+    this.logger.debug('Creating producers in bulk:', producersData.length)
+    await db.insert(producers).values(producersData)
   }
 
-  async createStudios(studios: any[]): Promise<void> {
-    this.logger.debug('Creating studios in bulk:', studios.length)
-    await prisma.studio.createMany({ data: studios })
+  async createStudios(studiosData: any[]): Promise<void> {
+    this.logger.debug('Creating studios in bulk:', studiosData.length)
+    await db.insert(studios).values(studiosData)
   }
 
   async getProducerIds(names: string[]): Promise<any[]> {
-    return prisma.producer.findMany({
-      where: { name: { in: names } },
-      select: { id: true, name: true },
-    })
+    return db
+      .select({
+        id: producers.id,
+        name: producers.name,
+      })
+      .from(producers)
+      .where(inArray(producers.name, names))
   }
 
   async getStudioIds(names: string[]): Promise<any[]> {
-    return prisma.studio.findMany({
-      where: { name: { in: names } },
-      select: { id: true, name: true },
-    })
+    return db
+      .select({
+        id: studios.id,
+        name: studios.name,
+      })
+      .from(studios)
+      .where(inArray(studios.name, names))
   }
 
   async createMovieProducerRelations(relations: any[]): Promise<void> {
-    this.logger.debug(
-      'Creating movie-producer relations in bulk:',
-      relations.length
-    )
-    await prisma.movieProducer.createMany({ data: relations })
+    this.logger.debug('Creating movie-producer relations:', relations.length)
+    await db.insert(movieProducers).values(relations)
   }
 
   async createMovieStudioRelations(relations: any[]): Promise<void> {
-    this.logger.debug(
-      'Creating movie-studio relations in bulk:',
-      relations.length
-    )
-    await prisma.movieStudio.createMany({ data: relations })
+    this.logger.debug('Creating movie-studio relations:', relations.length)
+    await db.insert(movieStudios).values(relations)
   }
 }
 
@@ -117,7 +127,6 @@ class MovieDataFactory {
     return { movieId, studioId }
   }
 }
-
 export class CSVImporter {
   private logger: Logger
   private repository: DatabaseRepository

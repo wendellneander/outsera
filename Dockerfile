@@ -4,14 +4,11 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install
+RUN npm ci
 
 COPY . .
 
-RUN chown -R node:node /app
-RUN chmod 755 /app/src/database/prisma/dev.db
-
-RUN npx prisma migrate dev
+# RUN chown -R node:node /app
 
 USER node
 

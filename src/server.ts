@@ -1,4 +1,5 @@
 import { createApp } from './app'
+import { initDatabase } from './database/client'
 import { importDataFromCSV } from './utils/csv-importer'
 import { Logger } from './utils/logger'
 
@@ -9,6 +10,8 @@ const logger = new Logger('Server')
 
 async function startServer() {
   try {
+    await initDatabase()
+
     await importDataFromCSV(CSV_FILE_PATH)
 
     const app = await createApp()

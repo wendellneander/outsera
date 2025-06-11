@@ -14,7 +14,6 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=${NODE_ENV}
-      - DATABASE_URL=${DATABASE_URL}
       - CSV_PATH=${CSV_PATH}
     networks:
       - dev
@@ -28,5 +27,4 @@ services:
       - /app/node_modules
     environment:
       - NODE_ENV=test
-      - DATABASE_URL=${DATABASE_URL}
       - CSV_PATH=${CSV_PATH}
