@@ -1,6 +1,6 @@
-# Outsera Awards API
+# Golden Raspberry Awards API
 
-This API provides information about movies from the Outsera Awards. It allows you to retrieve producers with the minimum and maximum intervals between their wins.
+This API provides information about movies from the Golden Raspberry Awards. It allows you to retrieve producers with the minimum and maximum intervals between their wins.
 
 ## Requirements
 
@@ -11,8 +11,8 @@ This API provides information about movies from the Outsera Awards. It allows yo
 ## Tech Stack
 
 - Express
-- Prisma
-- SQLIte
+- Drizzle
+- SQLite
 
 ## Setup
 
@@ -45,13 +45,7 @@ This API provides information about movies from the Outsera Awards. It allows yo
     npm install
     ```
 
-2.  **Generate Prisma client:**
-
-    ```bash
-    npx prisma generate
-    ```
-
-3.  **Start the application:**
+2.  **Start the application:**
 
     ```bash
     npm run dev
@@ -65,19 +59,13 @@ This API provides information about movies from the Outsera Awards. It allows yo
     npm install
     ```
 
-2.  **Generate Prisma client:**
-
-    ```bash
-    npx prisma generate
-    ```
-
-3.  **Build the application:**
+2.  **Build the application:**
 
     ```bash
     npm run build
     ```
 
-4.  **Start the application:**
+3.  **Start the application:**
 
     ```bash
     npm run start
