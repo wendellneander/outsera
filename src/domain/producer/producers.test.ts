@@ -47,12 +47,6 @@ describe('API Integration Tests', () => {
             previousWin: 1990,
             followingWin: 1991,
           },
-          {
-            producer: 'Bo Derek',
-            interval: 6,
-            previousWin: 1984,
-            followingWin: 1990,
-          },
         ],
         max: [
           {
@@ -60,12 +54,6 @@ describe('API Integration Tests', () => {
             interval: 13,
             previousWin: 2002,
             followingWin: 2015,
-          },
-          {
-            producer: 'Buzz Feitshans',
-            interval: 9,
-            previousWin: 1985,
-            followingWin: 1994,
           },
         ],
       })

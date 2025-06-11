@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 
 export type ProducerInterval = {
+  type?: 'min' | 'max'
   producer: string
   interval: number
   previousWin: number
@@ -8,12 +9,7 @@ export type ProducerInterval = {
 }
 
 export interface IProducersRepository {
-  findProducersWithMaxAwardInterval(
-    limit: number
-  ): Promise<ProducerInterval[] | null>
-  findProducersWithMinAwardInterval(
-    limit: number
-  ): Promise<ProducerInterval[] | null>
+  findProducersWithMinAndMaxAwardInterval(): Promise<ProducerInterval[] | null>
 }
 
 export interface IProducersController {

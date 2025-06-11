@@ -18,19 +18,25 @@ export class ProducersWithMinAndMaxAwardInterval
   }
 
   async execute(): Promise<ProducerWithMinAndMaxAwardIntervalOutput> {
-    const [producersWithMinInterval, producersWithMaxInterval] =
-      await Promise.all([
-        this.producersRepository.findProducersWithMinAwardInterval(2),
-        this.producersRepository.findProducersWithMaxAwardInterval(2),
-      ])
-    this.logger.info('Producers with min and max award interval', {
-      producersWithMinInterval,
-      producersWithMaxInterval,
+    this.logger.info(
+      'Executing use case to find producers with min and max award intervals'
+    )
+
+    const producers =
+      await this.producersRepository.findProducersWithMinAndMaxAwardInterval()
+
+    this.logger.info('Producers with min and max award intervals found', {
+      producers,
     })
 
+    const groupByType = (type: 'min' | 'max') =>
+      producers
+        ?.filter((producer) => producer.type === type)
+        .map(({ type, ...rest }) => rest) || []
+
     return {
-      min: producersWithMinInterval,
-      max: producersWithMaxInterval,
+      min: groupByType('min'),
+      max: groupByType('max'),
     }
   }
 }
